@@ -1,0 +1,188 @@
+/**
+ * Global styles and design tokens for Sagar's portfolio.
+ *
+ * Design token system:
+ * - Tokens defined inside @theme are usable as Tailwind utility classes.
+ *   e.g. bg-bg, text-brass, font-display, border-line
+ *
+ * Color palette:
+ * - bg / surface / surface-2 / surface-3: dark layered backgrounds (near-black)
+ * - paper / ink: warm off-white and dark ink for the "letter" sections
+ * - fg / muted: primary and secondary text on dark backgrounds
+ * - brass / brass-hover / brass-dim / brass-ink: warm gold accent color
+ * - line / line-bright: subtle border colors
+ *
+ * Typography:
+ * - sans (Outfit): body text, UI labels, buttons
+ * - display (Fraunces): headings, names, pull quotes — has optical size axis
+ * - mono (JetBrains Mono): terminal, code blocks, stat numbers
+ */
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #07090d;
+  --color-surface: #0f131a;
+  --color-surface-2: #161c24;
+  --color-surface-3: #1f2733;
+  --color-paper: #f4efe6;
+  --color-paper-line: #e2dacd;
+  --color-ink: #11151c;
+  --color-ink-soft: #4d463e;
+  --color-fg: #f5f2eb;
+  --color-muted: #9fa7b3;
+  --color-brass: #d4a054;
+  --color-brass-hover: #e5b369;
+  --color-brass-dim: #2e2416;
+  --color-brass-ink: #6e4b18;
+  --color-line: #1c232e;
+  --color-line-bright: #2d3848;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --radius-card: 1.25rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Show pointer on all interactive elements */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Brass-tinted text selection */
+  ::selection {
+    background: var(--color-brass);
+    color: var(--color-ink);
+  }
+
+  /* Consistent focus ring using the brass accent */
+  :focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 3px;
+  }
+
+  /* Custom scrollbar — minimal, matches the dark palette */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-surface-3);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brass);
+  }
+}
+
+/* --- Keyframe animations --- */
+
+/* Role text cycles in from below with a fade */
+@keyframes role-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Online status dot breathes gently */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+/* Terminal cursor blink */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Skeleton shimmer for loading states */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* --- Utility classes --- */
+
+.role-in {
+  animation: role-in 420ms ease;
+}
+
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s infinite;
+}
+
+/* Frosted glass panel — used for fixed header and overlays */
+.glass-panel {
+  background: rgba(15, 19, 26, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-line);
+}
+
+/* Hoverable frosted card — used in project grid */
+.glass-card {
+  background: linear-gradient(135deg, rgba(22, 28, 36, 0.6) 0%, rgba(15, 19, 26, 0.4) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-line);
+  transition: all 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(212, 160, 84, 0.4);
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.5), 0 0 20px -8px rgba(212, 160, 84, 0.15);
+}
+
+/* Respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .role-in,
+  .pulse-dot,
+  .cursor-blink {
+    animation: none;
+  }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}

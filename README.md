@@ -1,6 +1,6 @@
 <div align="center">
 
-<svg width="800" height="120" viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="140" viewBox="0 0 800 140" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#07090d"/>
@@ -12,45 +12,44 @@
       <stop offset="100%" style="stop-color:#d4a054"/>
     </linearGradient>
     <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
       <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <rect width="800" height="120" rx="12" fill="url(#bg)"/>
-  <rect x="0" y="108" width="800" height="2" rx="1" fill="url(#brass)" opacity="0.6"/>
+
+  <rect width="800" height="140" rx="14" fill="url(#bg)"/>
+  <rect x="0" y="136" width="800" height="3" rx="1" fill="url(#brass)" opacity="0.8"/>
+  <rect x="0" y="1" width="800" height="3" rx="1" fill="url(#brass)" opacity="0.5"/>
 
   <!-- Animated scan line -->
-  <rect x="0" y="0" width="800" height="2" rx="1" fill="url(#brass)" opacity="0.4">
-    <animateTransform attributeName="transform" type="translate" from="0,0" to="0,120" dur="3s" repeatCount="indefinite"/>
+  <rect x="0" y="0" width="800" height="2" fill="url(#brass)" opacity="0.3">
+    <animateTransform attributeName="transform" type="translate" from="0,-2" to="0,142" dur="4s" repeatCount="indefinite"/>
   </rect>
 
-  <!-- Corner dots -->
-  <circle cx="20" cy="20" r="4" fill="#d4a054" opacity="0.8">
-    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="780" cy="20" r="4" fill="#d4a054" opacity="0.8">
-    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="20" cy="100" r="4" fill="#d4a054" opacity="0.8">
-    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2.5s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="780" cy="100" r="4" fill="#d4a054" opacity="0.8">
-    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2.5s" repeatCount="indefinite"/>
-  </circle>
+  <!-- Pulsing corner dots -->
+  <circle cx="22" cy="22" r="4" fill="#d4a054"><animate attributeName="opacity" values="1;0.2;1" dur="2s" repeatCount="indefinite"/></circle>
+  <circle cx="778" cy="22" r="4" fill="#d4a054"><animate attributeName="opacity" values="0.2;1;0.2" dur="2s" repeatCount="indefinite"/></circle>
+  <circle cx="22" cy="118" r="4" fill="#d4a054"><animate attributeName="opacity" values="1;0.2;1" dur="2.5s" repeatCount="indefinite"/></circle>
+  <circle cx="778" cy="118" r="4" fill="#d4a054"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.5s" repeatCount="indefinite"/></circle>
 
   <!-- Title -->
-  <text x="400" y="52" font-family="monospace" font-size="28" font-weight="bold" fill="url(#brass)" text-anchor="middle" filter="url(#glow)">ENHANCED PORTFOLIO</text>
-  <text x="400" y="78" font-family="monospace" font-size="13" fill="#9fa7b3" text-anchor="middle">by Sagar Roka Chhetri · Full Stack Engineer · Kathmandu, Nepal</text>
-  <text x="400" y="100" font-family="monospace" font-size="10" fill="#4a5568" text-anchor="middle">React 19 · TypeScript · TanStack Router · Tailwind v4 · Vite 8</text>
+  <text x="400" y="52" font-family="'Courier New',monospace" font-size="30" font-weight="bold" fill="url(#brass)" text-anchor="middle" filter="url(#glow)">ENHANCED PORTFOLIO</text>
+  <text x="400" y="80" font-family="'Courier New',monospace" font-size="13" fill="#9fa7b3" text-anchor="middle">Boilerplate by Sagar Roka Chhetri · Full Stack Engineer · Kathmandu, Nepal</text>
+  <text x="400" y="104" font-family="'Courier New',monospace" font-size="10" fill="#4a5568" text-anchor="middle">React 19  ·  TypeScript 5.7  ·  TanStack Router  ·  Tailwind CSS v4  ·  Vite 8</text>
+
+  <!-- Status indicator -->
+  <circle cx="356" cy="122" r="4" fill="#10b981"><animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/></circle>
+  <text x="365" y="126" font-family="'Courier New',monospace" font-size="9" fill="#10b981">Open to work</text>
 </svg>
 
 <br/>
 
-![Status](https://img.shields.io/badge/status-live-brightgreen?style=for-the-badge&labelColor=0f131a&color=10b981)
-![License](https://img.shields.io/badge/license-Proprietary-d4a054?style=for-the-badge&labelColor=0f131a)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3b82f6?style=for-the-badge&labelColor=0f131a&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61dafb?style=for-the-badge&labelColor=0f131a&logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-8-646cff?style=for-the-badge&labelColor=0f131a&logo=vite&logoColor=white)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3b82f6?style=flat-square&logo=typescript&logoColor=white&labelColor=0f131a)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react&logoColor=white&labelColor=0f131a)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8-646cff?style=flat-square&logo=vite&logoColor=white&labelColor=0f131a)](https://vite.dev/)
+[![TanStack Router](https://img.shields.io/badge/TanStack_Router-1.x-f59e0b?style=flat-square&labelColor=0f131a)](https://tanstack.com/router)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white&labelColor=0f131a)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-Proprietary-ef4444?style=flat-square&labelColor=0f131a)](./LICENSE)
 
 </div>
 
@@ -72,111 +71,42 @@
 
 ---
 
-## ✦ What is this
+## ✦ About
 
-This is my personal portfolio — built from scratch, no templates, no starter kits I didn't understand. Every architectural decision was intentional. It doubles as a boilerplate I can reuse and evolve.
+This is my personal developer portfolio — built from scratch with no starter templates, no copied scaffolding, no code I don't understand. Every decision was intentional. It doubles as a reusable boilerplate I own and maintain.
 
-> **All rights reserved. This code may not be used, copied, or adapted without explicit written permission from the author. See [LICENSE](./LICENSE).**
+> ⚠️ **All rights reserved.** This code may not be used, copied, modified, or distributed without explicit written permission from the author. See [LICENSE](./LICENSE).
 
 ---
 
-## ✦ Feature Showcase
+## ✦ Features
 
-<div align="center">
-
-<svg width="760" height="300" viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="card1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f131a"/>
-      <stop offset="100%" style="stop-color:#161c24"/>
-    </linearGradient>
-    <linearGradient id="card2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f131a"/>
-      <stop offset="100%" style="stop-color:#161c24"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Card 1: Live Code Playground -->
-  <rect x="10" y="10" width="225" height="130" rx="10" fill="url(#card1)" stroke="#1c232e" stroke-width="1"/>
-  <rect x="10" y="10" width="225" height="3" rx="1" fill="#10b981" opacity="0.7"/>
-  <text x="30" y="42" font-family="monospace" font-size="11" fill="#10b981">▶  Live Code Playground</text>
-  <text x="30" y="62" font-family="monospace" font-size="9" fill="#4a5568">TypeScript source on left.</text>
-  <text x="30" y="76" font-family="monospace" font-size="9" fill="#4a5568">Live React output on right.</text>
-  <text x="30" y="90" font-family="monospace" font-size="9" fill="#4a5568">4 real projects: E-Commerce,</text>
-  <text x="30" y="104" font-family="monospace" font-size="9" fill="#4a5568">Job Board, Dashboard, SaaS.</text>
-  <text x="30" y="125" font-family="monospace" font-size="8" fill="#10b981" opacity="0.6">Click Run ▶ to render output</text>
-
-  <!-- Card 2: 3D Monitor -->
-  <rect x="247" y="10" width="225" height="130" rx="10" fill="url(#card1)" stroke="#1c232e" stroke-width="1"/>
-  <rect x="247" y="10" width="225" height="3" rx="1" fill="#d4a054" opacity="0.7"/>
-  <text x="267" y="42" font-family="monospace" font-size="11" fill="#d4a054">◈  3D Desktop Monitor</text>
-  <text x="267" y="62" font-family="monospace" font-size="9" fill="#4a5568">CSS 3D perspective transform.</text>
-  <text x="267" y="76" font-family="monospace" font-size="9" fill="#4a5568">Mouse parallax tilt effect.</text>
-  <text x="267" y="90" font-family="monospace" font-size="9" fill="#4a5568">Idle float animation.</text>
-  <text x="267" y="104" font-family="monospace" font-size="9" fill="#4a5568">Scanlines + glass glare overlay.</text>
-  <text x="267" y="125" font-family="monospace" font-size="8" fill="#d4a054" opacity="0.6">No WebGL · Pure CSS · Any device</text>
-
-  <!-- Card 3: Terminal CLI -->
-  <rect x="484" y="10" width="225" height="130" rx="10" fill="url(#card1)" stroke="#1c232e" stroke-width="1"/>
-  <rect x="484" y="10" width="225" height="3" rx="1" fill="#3b82f6" opacity="0.7"/>
-  <text x="504" y="42" font-family="monospace" font-size="11" fill="#3b82f6">$  Interactive Terminal CLI</text>
-  <text x="504" y="62" font-family="monospace" font-size="9" fill="#4a5568">Full command set: whoami,</text>
-  <text x="504" y="76" font-family="monospace" font-size="9" fill="#4a5568">projects, skills, why-hired.</text>
-  <text x="504" y="90" font-family="monospace" font-size="9" fill="#4a5568">Free-form Q&amp;A with keyword</text>
-  <text x="504" y="104" font-family="monospace" font-size="9" fill="#4a5568">matching. Open with ⌘K or /</text>
-  <text x="504" y="125" font-family="monospace" font-size="8" fill="#3b82f6" opacity="0.6">Keyboard shortcut: ⌘K or /</text>
-
-  <!-- Card 4: BS Calendar -->
-  <rect x="10" y="155" width="225" height="130" rx="10" fill="url(#card1)" stroke="#1c232e" stroke-width="1"/>
-  <rect x="10" y="155" width="225" height="3" rx="1" fill="#8b5cf6" opacity="0.7"/>
-  <text x="30" y="187" font-family="monospace" font-size="11" fill="#8b5cf6">◉  BS Calendar Engine</text>
-  <text x="30" y="207" font-family="monospace" font-size="9" fill="#4a5568">Custom Bikram Sambat ↔ AD</text>
-  <text x="30" y="221" font-family="monospace" font-size="9" fill="#4a5568">conversion. Hand-verified</text>
-  <text x="30" y="235" font-family="monospace" font-size="9" fill="#4a5568">lookup tables. Nepal UTC+5:45</text>
-  <text x="30" y="249" font-family="monospace" font-size="9" fill="#4a5568">timezone. GPL-3.0 open source.</text>
-  <text x="30" y="270" font-family="monospace" font-size="8" fill="#8b5cf6" opacity="0.6">No external library · 10yr accuracy</text>
-
-  <!-- Card 5: Contact Form -->
-  <rect x="247" y="155" width="225" height="130" rx="10" fill="url(#card1)" stroke="#1c232e" stroke-width="1"/>
-  <rect x="247" y="155" width="225" height="3" rx="1" fill="#ec4899" opacity="0.7"/>
-  <text x="267" y="187" font-family="monospace" font-size="11" fill="#ec4899">✉  Web3Forms Contact</text>
-  <text x="267" y="207" font-family="monospace" font-size="9" fill="#4a5568">Sends directly to inbox.</text>
-  <text x="267" y="221" font-family="monospace" font-size="9" fill="#4a5568">No backend, no email client.</text>
-  <text x="267" y="235" font-family="monospace" font-size="9" fill="#4a5568">Subject presets, name, company,</text>
-  <text x="267" y="249" font-family="monospace" font-size="9" fill="#4a5568">message. Zero spam tracking.</text>
-  <text x="267" y="270" font-family="monospace" font-size="8" fill="#ec4899" opacity="0.6">Powered by Web3Forms API</text>
-
-  <!-- Card 6: Recruiter Modal -->
-  <rect x="484" y="155" width="225" height="130" rx="10" fill="url(#card1)" stroke="#1c232e" stroke-width="1"/>
-  <rect x="484" y="155" width="225" height="3" rx="1" fill="#f59e0b" opacity="0.7"/>
-  <text x="504" y="187" font-family="monospace" font-size="11" fill="#f59e0b">✦  60s Recruiter Brief</text>
-  <text x="504" y="207" font-family="monospace" font-size="9" fill="#4a5568">One-click recruiter packet.</text>
-  <text x="504" y="221" font-family="monospace" font-size="9" fill="#4a5568">Copyable summary, resume</text>
-  <text x="504" y="235" font-family="monospace" font-size="9" fill="#4a5568">download, LinkedIn, GitHub.</text>
-  <text x="504" y="249" font-family="monospace" font-size="9" fill="#4a5568">Interactive fit checker UI.</text>
-  <text x="504" y="270" font-family="monospace" font-size="8" fill="#f59e0b" opacity="0.6">Built for hiring managers</text>
-</svg>
-
-</div>
+| Feature | Description |
+|:---|:---|
+| 🖥️ **3D Desktop Monitor** | CSS perspective transform, mouse parallax tilt, idle float animation, scanlines overlay — no WebGL |
+| ▶️ **Live Code Playground** | TypeScript source on left, live React output on right. Click Run to render. 4 real mini-apps |
+| ⌨️ **Interactive Terminal CLI** | Full command set: `whoami`, `projects`, `skills`, `why-hired`. Open with `⌘K` or `/` |
+| ✨ **60s Recruiter Brief** | One-click modal with copyable recruiter packet, resume download, LinkedIn, GitHub links |
+| 📅 **BS Calendar Engine** | Custom Bikram Sambat ↔ Gregorian conversion — hand-verified tables, no external library |
+| ✉️ **Web3Forms Contact** | Sends directly to inbox — no backend, no email client popup required |
+| 📊 **GitHub Pulse** | Deterministic contribution heatmap showing engineering velocity |
+| 🎨 **Design Token System** | `@theme` CSS variables in Tailwind v4 — brass accent, dark palette, serif display font |
+| 📱 **Fully Responsive** | Mobile-first, tested 320px → 1440px. Mobile pane switcher for code playground |
+| 🚀 **Shared Hosting Ready** | Legacy plugin generates `nomodule` bundles — works on InfinityFree, cPanel |
 
 ---
 
 ## ✦ Tech Stack
 
-<div align="center">
-
-| Layer | Technology | Why |
-|:---|:---|:---|
-| **UI Framework** | React 19 | Concurrent features, stable |
-| **Language** | TypeScript 5.7 strict | Zero guessing at runtime |
-| **Routing** | TanStack Router | File-based, fully type-safe |
-| **Styling** | Tailwind CSS v4 | `@theme` tokens, native Vite plugin |
-| **Build Tool** | Vite 8 | Sub-second HMR, rolldown bundler |
-| **Legacy Support** | `@vitejs/plugin-legacy` | Works on shared hosting |
-| **Contact** | Web3Forms | No backend, delivers to inbox |
-| **Deployment** | Static SPA | InfinityFree, cPanel, Vercel, Netlify |
-
-</div>
+```
+Frontend    React 19 + TypeScript 5.7 (strict)
+Routing     TanStack Router (file-based, type-safe)
+Styling     Tailwind CSS v4 (native Vite plugin, @theme tokens)
+Build       Vite 8 (rolldown bundler, sub-second HMR)
+Fonts       Fraunces (display) · Outfit (sans) · JetBrains Mono (mono)
+Contact     Web3Forms (zero backend)
+Hosting     Static SPA → InfinityFree / cPanel / Vercel / Netlify
+```
 
 ---
 
@@ -184,36 +114,50 @@ This is my personal portfolio — built from scratch, no templates, no starter k
 
 ```
 portfolio/
-├── public/                   # Static assets (images, resume, favicon)
+├── public/                        # Static assets
+│   ├── pic/                       # Avatar photo
+│   ├── projects/                  # Project screenshots
+│   ├── resume/                    # ATS resume PDF
+│   ├── certificate/               # Credentials
+│   └── favicon.svg
+│
 ├── src/
 │   ├── components/
-│   │   └── sections/         # All portfolio sections and widgets
-│   │       ├── portfolio.tsx       # Main portfolio page (all sections)
+│   │   └── sections/              # All portfolio components
+│   │       ├── portfolio.tsx      # Main page (all sections wired together)
 │   │       ├── code-playground.tsx # 3D monitor + live code output
-│   │       ├── terminal-modal.tsx  # Interactive CLI terminal
+│   │       ├── terminal-modal.tsx  # Interactive CLI
 │   │       ├── recruiter-modal.tsx # 60-second recruiter brief
 │   │       ├── project-modal.tsx   # Project deep-dive modal
 │   │       ├── github-pulse.tsx    # Git activity heatmap
 │   │       ├── namo-patro-widget.tsx  # BS calendar demo
-│   │       └── jobhunt-agent-widget.tsx # AI matcher demo
+│   │       ├── jobhunt-agent-widget.tsx # AI matcher demo
+│   │       ├── signal-canvas.tsx   # Three.js 3D scene (unused, kept)
+│   │       └── audio-feedback.ts  # Web Audio API tactile sounds
+│   │
 │   ├── data/
-│   │   ├── profile.ts        # ← Edit this to customise content
-│   │   └── notes.ts          # ← Edit this for blog entries
-│   ├── lib/
+│   │   ├── profile.ts             # ← Edit this to update all content
+│   │   └── notes.ts               # ← Edit this for blog entries
+│   │
+│   ├── utils/
 │   │   ├── calendar/
-│   │   │   └── bs-converter.ts   # Bikram Sambat engine
-│   │   └── error-component.tsx
+│   │   │   └── bs-converter.ts    # Bikram Sambat engine
+│   │   └── error-component.tsx    # Route error boundary
+│   │
 │   ├── routes/
-│   │   ├── __root.tsx        # Root layout
-│   │   └── index.tsx         # Home route "/"
-│   ├── main.tsx              # App entry point
-│   ├── router.tsx            # Router + module augmentation
-│   └── styles.css            # Design tokens + global styles
-├── index.html                # Vite entry HTML
-├── vite.config.ts            # Build configuration
-├── tsconfig.json             # TypeScript config
+│   │   ├── __root.tsx             # Root layout (Outlet)
+│   │   └── index.tsx              # Home route "/"
+│   │
+│   ├── main.tsx                   # App entry point
+│   ├── router.tsx                 # TanStack Router setup
+│   ├── routeTree.gen.ts           # Auto-generated by TanStack Router
+│   └── styles.css                 # Design tokens + global styles
+│
+├── index.html                     # Vite HTML entry
+├── vite.config.ts                 # Build config
+├── tsconfig.json                  # TypeScript config
 ├── package.json
-├── LICENSE                   # Proprietary — all rights reserved
+├── LICENSE                        # Proprietary — all rights reserved
 └── README.md
 ```
 
@@ -222,37 +166,37 @@ portfolio/
 ## ✦ Getting Started
 
 ```bash
-# 1. Clone
+# Clone
 git clone https://github.com/sc8134/Enhanced-Portfolio.git
 cd Enhanced-Portfolio
 
-# 2. Install
+# Install dependencies
 npm install
 
-# 3. Dev server (opens on http://localhost:8080)
+# Start dev server → http://localhost:8080
 npm run dev
 
-# 4. Type check
+# Type check
 npm run typecheck
 
-# 5. Build for production
+# Production build → dist/
 npm run build
+
+# Preview production build
+npm run preview
 ```
 
 ---
 
-## ✦ Deploying to Shared Hosting (InfinityFree / cPanel)
+## ✦ Deploying to Shared Hosting
 
 ```bash
-# Build
 npm run build
-
-# Zip the dist/ contents
-# Upload dist.zip to htdocs/ via File Manager
+# Zip contents of dist/ and upload to htdocs/ via File Manager
 # Extract in place
 ```
 
-Add a `.htaccess` in `htdocs/` for client-side routing:
+Add `.htaccess` in `htdocs/` for client-side routing:
 
 ```apache
 Options -MultiViews
@@ -261,64 +205,39 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.html [L]
 ```
 
+Works on **InfinityFree**, **cPanel**, and any static host.
+
 ---
 
 ## ✦ Customising
 
-All content lives in two files:
+Two files control all content:
 
-**`src/data/profile.ts`** — your name, bio, tagline, projects, skills, career path, socials, Q&A replies
+**`src/data/profile.ts`** — name, bio, tagline, projects, skills, career path, socials, terminal Q&A replies
 
-**`src/data/notes.ts`** — your blog entries / field notes
+**`src/data/notes.ts`** — blog entries / field notes
 
-Change those two files and everything on the site updates automatically.
+Edit those and every section of the site updates automatically.
 
 ---
 
-## ✦ Design System
+## ✦ Design Tokens
 
-<div align="center">
+```css
+/* Colors */
+--color-bg:        #07090d   /* Page background        */
+--color-surface:   #0f131a   /* Card background         */
+--color-brass:     #d4a054   /* Primary accent (gold)   */
+--color-fg:        #f5f2eb   /* Primary text            */
+--color-muted:     #9fa7b3   /* Secondary text          */
+--color-line:      #1c232e   /* Borders                 */
+--color-paper:     #f4efe6   /* Light section bg        */
 
-<svg width="600" height="80" viewBox="0 0 600 80" xmlns="http://www.w3.org/2000/svg">
-  <rect width="600" height="80" rx="8" fill="#07090d" stroke="#1c232e" stroke-width="1"/>
-  <!-- Color swatches -->
-  <rect x="20" y="20" width="40" height="40" rx="6" fill="#07090d" stroke="#1c232e" stroke-width="1"/>
-  <text x="40" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">bg</text>
-
-  <rect x="70" y="20" width="40" height="40" rx="6" fill="#0f131a"/>
-  <text x="90" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">surface</text>
-
-  <rect x="120" y="20" width="40" height="40" rx="6" fill="#1c232e"/>
-  <text x="140" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">line</text>
-
-  <rect x="170" y="20" width="40" height="40" rx="6" fill="#d4a054"/>
-  <text x="190" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">brass</text>
-
-  <rect x="220" y="20" width="40" height="40" rx="6" fill="#f5f2eb"/>
-  <text x="240" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">fg</text>
-
-  <rect x="270" y="20" width="40" height="40" rx="6" fill="#9fa7b3"/>
-  <text x="290" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">muted</text>
-
-  <rect x="320" y="20" width="40" height="40" rx="6" fill="#f4efe6"/>
-  <text x="340" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">paper</text>
-
-  <rect x="370" y="20" width="40" height="40" rx="6" fill="#10b981"/>
-  <text x="390" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">emerald</text>
-
-  <rect x="420" y="20" width="40" height="40" rx="6" fill="#3b82f6"/>
-  <text x="440" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">blue</text>
-
-  <rect x="470" y="20" width="40" height="40" rx="6" fill="#8b5cf6"/>
-  <text x="490" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">violet</text>
-
-  <rect x="520" y="20" width="40" height="40" rx="6" fill="#ef4444"/>
-  <text x="540" y="74" font-family="monospace" font-size="7" fill="#4a5568" text-anchor="middle">red</text>
-</svg>
-
-**Fonts:** `Fraunces` (display/headings) · `Outfit` (body/UI) · `JetBrains Mono` (code/terminal)
-
-</div>
+/* Typography */
+--font-display:    "Fraunces"      /* Headings, pull quotes  */
+--font-sans:       "Outfit"        /* Body, UI labels        */
+--font-mono:       "JetBrains Mono" /* Code, terminal         */
+```
 
 ---
 
@@ -326,16 +245,20 @@ Change those two files and everything on the site updates automatically.
 
 <div align="center">
 
-<svg width="600" height="100" viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg">
-  <rect width="600" height="100" rx="10" fill="#0f131a" stroke="#ef444430" stroke-width="1"/>
-  <rect x="0" y="0" width="600" height="3" rx="1" fill="#ef4444" opacity="0.6"/>
-  <text x="300" y="35" font-family="monospace" font-size="14" font-weight="bold" fill="#ef4444" text-anchor="middle">⚠  PROPRIETARY — ALL RIGHTS RESERVED</text>
-  <text x="300" y="58" font-family="monospace" font-size="10" fill="#9fa7b3" text-anchor="middle">This software may NOT be used, copied, modified, or distributed</text>
-  <text x="300" y="74" font-family="monospace" font-size="10" fill="#9fa7b3" text-anchor="middle">without explicit written permission from Sagar Roka Chhetri.</text>
-  <text x="300" y="92" font-family="monospace" font-size="9" fill="#4a5568" text-anchor="middle">Contact: sc81341@gmail.com · Copyright © 2026 Sagar Roka Chhetri</text>
-</svg>
+```
+⚠  PROPRIETARY — ALL RIGHTS RESERVED
+
+This software may NOT be used, copied, modified, distributed,
+or built upon without explicit written permission from:
+
+Sagar Roka Chhetri · sc81341@gmail.com
+
+Copyright © 2026 Sagar Roka Chhetri
+```
 
 </div>
+
+See [LICENSE](./LICENSE) for full terms.
 
 ---
 
@@ -343,37 +266,38 @@ Change those two files and everything on the site updates automatically.
 
 <div align="center">
 
-<svg width="500" height="90" viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg">
+<svg width="520" height="88" viewBox="0 0 520 88" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="authorbg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="abg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0f131a"/>
       <stop offset="100%" style="stop-color:#161c24"/>
     </linearGradient>
+    <linearGradient id="br2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d4a054"/>
+      <stop offset="100%" style="stop-color:#f5c378"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="90" rx="10" fill="url(#authorbg)" stroke="#1c232e" stroke-width="1"/>
-  <rect x="0" y="0" width="500" height="3" rx="1" fill="url(#brass)"/>
-  <circle cx="55" cy="45" r="28" fill="#d4a05420" stroke="#d4a05440" stroke-width="1"/>
-  <text x="55" y="51" font-family="monospace" font-size="22" text-anchor="middle">⚡</text>
-  <text x="105" y="30" font-family="monospace" font-size="14" font-weight="bold" fill="#f5f2eb">Sagar Roka Chhetri</text>
-  <text x="105" y="48" font-family="monospace" font-size="10" fill="#d4a054">Full Stack Engineer · Kathmandu, Nepal (UTC+5:45)</text>
-  <text x="105" y="65" font-family="monospace" font-size="9" fill="#4a5568">github.com/sc8134  ·  linkedin.com/in/sagar-rc  ·  sc81341@gmail.com</text>
-  <!-- Status dot -->
-  <circle cx="460" cy="20" r="5" fill="#10b981">
-    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+  <rect width="520" height="88" rx="12" fill="url(#abg)" stroke="#1c232e" stroke-width="1"/>
+  <rect x="0" y="0" width="520" height="3" rx="1" fill="url(#br2)"/>
+  <circle cx="52" cy="44" r="30" fill="#d4a05415" stroke="#d4a05430" stroke-width="1"/>
+  <text x="52" y="51" font-family="monospace" font-size="24" text-anchor="middle">⚡</text>
+  <text x="98" y="28" font-family="'Courier New',monospace" font-size="15" font-weight="bold" fill="#f5f2eb">Sagar Roka Chhetri</text>
+  <text x="98" y="46" font-family="'Courier New',monospace" font-size="10" fill="#d4a054">Full Stack Engineer · Kathmandu, Nepal (UTC+5:45)</text>
+  <text x="98" y="63" font-family="'Courier New',monospace" font-size="9" fill="#4a5568">github.com/sc8134  ·  linkedin.com/in/sagar-rc</text>
+  <text x="98" y="76" font-family="'Courier New',monospace" font-size="9" fill="#4a5568">sc81341@gmail.com</text>
+  <circle cx="490" cy="18" r="5" fill="#10b981">
+    <animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
   </circle>
-  <text x="445" y="38" font-family="monospace" font-size="8" fill="#10b981" text-anchor="middle">Open to work</text>
 </svg>
 
 <br/>
 
-[![GitHub](https://img.shields.io/badge/GitHub-sc8134-d4a054?style=for-the-badge&labelColor=0f131a&logo=github&logoColor=white)](https://github.com/sc8134)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-sagar--rc-3b82f6?style=for-the-badge&labelColor=0f131a&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sagar-rc)
-[![Email](https://img.shields.io/badge/Email-sc81341@gmail.com-10b981?style=for-the-badge&labelColor=0f131a&logo=gmail&logoColor=white)](mailto:sc81341@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-sc8134-d4a054?style=flat-square&logo=github&logoColor=white&labelColor=0f131a)](https://github.com/sc8134)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-sagar--rc-3b82f6?style=flat-square&logo=linkedin&logoColor=white&labelColor=0f131a)](https://www.linkedin.com/in/sagar-rc)
+[![Email](https://img.shields.io/badge/Email-sc81341@gmail.com-10b981?style=flat-square&logo=gmail&logoColor=white&labelColor=0f131a)](mailto:sc81341@gmail.com)
 
-</div>
-
----
-
-<div align="center">
+<br/>
 <sub>Built from scratch · Every line written, tested, and deployed by Sagar RC</sub>
+
 </div>

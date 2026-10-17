@@ -572,8 +572,8 @@ export function Portfolio() {
       ) : null}
 
       <main>
-        {/* HERO SECTION: The 1-of-1 Centerpiece */}
-        <section id="signal" className="border-b border-line relative overflow-hidden">
+        {/* HERO SECTION: The Book Cover */}
+        <section id="signal" className="book-cover relative overflow-hidden scroll-mt-0">
           {/* Subtle background glow */}
           <div className="absolute top-1/4 left-1/4 -z-10 size-96 rounded-full bg-brass/5 blur-3xl pointer-events-none" />
 
@@ -696,8 +696,11 @@ export function Portfolio() {
         </section>
 
         {/* SECTION 2: ORIGIN & EDITORIAL STORY ("The Long Way Around") */}
-        <section id="origin" className="scroll-mt-20 bg-paper text-ink border-b border-paper-line">
+        <section id="origin" className="book-page scroll-mt-20 border-b border-paper-line">
           <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:gap-12 lg:py-20 lg:grid-cols-12">
+            <div className="chapter-divider lg:col-span-12">
+              <span className="chapter-number">Chapter 2 · Origin & Philosophy</span>
+            </div>
             {/* Left Column: Editorial Callout */}
             <div className="lg:col-span-5 space-y-6">
               <div>
@@ -734,7 +737,7 @@ export function Portfolio() {
                   <span className="font-display text-2xl text-brass-ink font-semibold shrink-0 pt-0.5">
                     0{index + 1}
                   </span>
-                  <p className="text-base sm:text-lg leading-relaxed text-ink-soft">
+                  <p className={`text-base sm:text-lg leading-relaxed text-ink-soft ${index === 0 ? "drop-cap" : ""}`}>
                     {paragraph}
                   </p>
                 </div>
@@ -744,8 +747,11 @@ export function Portfolio() {
         </section>
 
         {/* SECTION 3: IMMUTABLE ENGINEERING PRINCIPLES */}
-        <section id="principles" className="scroll-mt-20 border-b border-line bg-surface/40">
+        <section id="principles" className="book-page scroll-mt-20 border-b border-paper-line">
           <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+            <div className="chapter-divider">
+              <span className="chapter-number">Chapter 3 · How I Build</span>
+            </div>
             <p className="text-xs tracking-widest text-brass uppercase font-semibold">
               03 · How I Build
             </p>
@@ -775,8 +781,11 @@ export function Portfolio() {
         </section>
 
         {/* SECTION 4: FLAGSHIP WORK SHOWCASE (ALL 8 BUILDS) */}
-        <section id="work" className="scroll-mt-20 border-b border-line">
+        <section id="work" className="book-page scroll-mt-20 border-b border-paper-line">
           <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+            <div className="chapter-divider">
+              <span className="chapter-number">Chapter 4 · The Showcase</span>
+            </div>
             {/* Header & Filter Pills */}
             <div className="flex flex-wrap items-end justify-between gap-6 pb-6 border-b border-line">
               <div>
@@ -1014,8 +1023,11 @@ export function Portfolio() {
         </section>
 
         {/* SECTION 5: CRAFT & PROOF MATRIX (SKILLS WITH REAL CODE PROOF) */}
-        <section id="craft" className="scroll-mt-20 border-b border-line bg-surface/30">
+        <section id="craft" className="book-page scroll-mt-20 border-b border-paper-line">
           <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+            <div className="chapter-divider">
+              <span className="chapter-number">Chapter 5 · Proof, Not Percentages</span>
+            </div>
             <p className="text-xs tracking-widest text-brass uppercase font-semibold">
               05 · Proof, Not Percentages
             </p>
@@ -1101,8 +1113,11 @@ export function Portfolio() {
         </section>
 
         {/* SECTION 6: THE PATH (CAREER, STUDY & CREDENTIALS) */}
-        <section id="path" className="scroll-mt-20 bg-paper text-ink border-b border-paper-line">
+        <section id="path" className="book-page scroll-mt-20 border-b border-paper-line">
           <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+            <div className="chapter-divider">
+              <span className="chapter-number">Chapter 6 · The Path</span>
+            </div>
             <p className="text-xs tracking-widest text-brass-ink uppercase font-semibold">
               06 · The Path
             </p>
@@ -1183,8 +1198,11 @@ export function Portfolio() {
         </section>
 
         {/* SECTION 7: FIELD NOTES & ESSAYS (FULL EDITORIAL READS) */}
-        <section id="notes" className="scroll-mt-20 border-b border-line">
+        <section id="notes" className="book-page scroll-mt-20 border-b border-paper-line">
           <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+            <div className="chapter-divider">
+              <span className="chapter-number">Chapter 7 · Field Notes</span>
+            </div>
             <p className="text-xs tracking-widest text-brass uppercase font-semibold">
               07 · Field Notes
             </p>
@@ -1275,8 +1293,11 @@ export function Portfolio() {
         </section>
 
         {/* SECTION 8: RECRUITER & CONTACT HUB */}
-        <section id="hire" className="scroll-mt-20">
+        <section id="hire" className="book-page scroll-mt-20">
           <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:gap-12 lg:py-20 lg:grid-cols-12">
+            <div className="chapter-divider lg:col-span-12">
+              <span className="chapter-number">Chapter 8 · Recruiter & Hire Hub</span>
+            </div>
             {/* Left Column: Direct Info & Timezone Clock */}
             <div className="lg:col-span-5 space-y-6">
               <div>

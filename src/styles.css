@@ -186,3 +186,173 @@
   from { opacity: 1; }
   to   { opacity: 0; }
 }
+
+/* --- Book styles --- */
+
+/* Book page — parchment texture and warm light background */
+.book-page {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  position: relative;
+  /* Override design tokens so existing Tailwind classes use light variants */
+  --color-fg: var(--color-ink);
+  --color-muted: var(--color-ink-soft);
+  --color-brass: var(--color-brass-ink);
+  --color-brass-hover: #8a6228;
+  --color-surface: rgba(255, 255, 255, 0.5);
+  --color-surface-2: rgba(255, 255, 255, 0.7);
+  --color-surface-3: rgba(255, 255, 255, 0.85);
+  --color-bg: var(--color-paper);
+  --color-line: var(--color-paper-line);
+  --color-line-bright: #d0c8b8;
+}
+
+/* Subtle paper grain texture */
+.book-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image:
+    radial-gradient(circle at 20% 30%, var(--color-ink) 1px, transparent 1px),
+    radial-gradient(circle at 70% 60%, var(--color-ink) 1px, transparent 1px);
+  background-size: 40px 40px, 60px 60px;
+}
+
+/* Chapter divider — decorative line with number */
+.chapter-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.chapter-divider::before,
+.chapter-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-paper-line);
+}
+
+.chapter-number {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-brass-ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Drop cap — first letter of opening paragraph */
+.drop-cap::first-letter {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 0.8;
+  float: left;
+  margin-right: 0.5rem;
+  margin-top: 0.25rem;
+  color: var(--color-brass-ink);
+  font-weight: 600;
+}
+
+/* Book spread — two-column page layout */
+.book-spread {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .book-spread {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+/* Book page number */
+.page-number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-brass-ink);
+  opacity: 0.5;
+  text-align: center;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-paper-line);
+}
+
+/* Book cover — the title page */
+.book-cover {
+  background: linear-gradient(135deg, #1a1209 0%, #0f0a04  100%);
+  color: var(--color-paper);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gold border on book cover */
+.book-cover::after {
+  content: "";
+  position: absolute;
+  inset: 2rem;
+  border: 2px solid var(--color-brass);
+  border-radius: 4px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.book-cover::before {
+  content: "";
+  position: absolute;
+  inset: 2.5rem;
+  border: 1px solid var(--color-brass);
+  border-radius: 2px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Book spread image — looks like a printed plate */
+.book-plate {
+  border: 1px solid var(--color-paper-line);
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.book-plate img {
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  display: block;
+}
+
+/* Plate caption — italic text below image */
+.book-plate-caption {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+/* Page break between sections */
+.page-break {
+  height: 2px;
+  background: linear-gradient(to right,
+    transparent,
+    var(--color-paper-line) 20%,
+    var(--color-paper-line) 80%,
+    transparent
+  );
+  margin: 3rem 0;
+}

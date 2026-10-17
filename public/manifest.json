@@ -1,0 +1,16 @@
+{
+  "name": "Sagar RC — Portfolio",
+  "short_name": "Sagar RC",
+  "description": "Full Stack Engineer from Kathmandu, Nepal. I write my own code, test it, fix it, and deploy it.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07090d",
+  "theme_color": "#07090d",
+  "icons": [
+    {
+      "src": "./logo/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}

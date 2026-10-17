@@ -3,23 +3,118 @@
   <head>
     <!-- Portfolio entry point. Vite injects bundled JS/CSS asset tags during build. -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0b0e12" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#07090d" />
+
+    <!-- Primary Meta Tags -->
+    <title>Sagar Roka Chhetri | Full Stack Engineer from Kathmandu</title>
+    <meta name="title" content="Sagar Roka Chhetri | Full Stack Engineer from Kathmandu" />
+    <meta
+      name="description"
+      content="Full-stack engineer from Kathmandu, Nepal. I write my own code, test it, fix it, and deploy it. React, TypeScript, Python, Node.js. 8 products shipped, production MERN at CodeRunners."
+    />
+    <meta name="keywords" content="Sagar Roka Chhetri, Sagar RC, Full Stack Engineer, Kathmandu, Nepal, React, TypeScript, Node.js, PostgreSQL, Python, web developer portfolio, Signal Job Portal, Namo Patro" />
+    <meta name="author" content="Sagar Roka Chhetri" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sagarrc.com.np/" />
+    <meta property="og:title" content="Sagar Roka Chhetri | Full Stack Engineer" />
+    <meta property="og:description" content="Full-stack engineer from Kathmandu. I write my own code, test it, fix it, and deploy it. 8 products shipped, production MERN at CodeRunners Technologies." />
+    <meta property="og:image" content="./og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Sagar Roka Chhetri Portfolio" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://sagarrc.com.np/" />
+    <meta name="twitter:title" content="Sagar Roka Chhetri | Full Stack Engineer" />
+    <meta name="twitter:description" content="Full-stack engineer from Kathmandu. I write my own code, test it, fix it, and deploy it." />
+    <meta name="twitter:image" content="./og.jpg" />
+    <meta name="twitter:creator" content="@Sagarch05339168" />
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./logo/logo.webp" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,640;1,9..144,500;1,9..144,560&family=Outfit:wght@400;500;600&display=swap"
     />
-    <title>Sagar Roka Chhetri | Full Stack Engineer</title>
-    <meta
-      name="description"
-      content="Field notes from Sagar Roka Chhetri, a full-stack engineer in Lalitpur. The projects, the friction behind them, and why Signal got him hired."
-    />
+
+    <!-- Structured Data: Person -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Sagar Roka Chhetri",
+      "alternateName": "Sagar RC",
+      "jobTitle": "Full Stack Engineer",
+      "email": "sc81341@gmail.com",
+      "url": "https://sagarrc.com.np",
+      "image": "./og.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kathmandu",
+        "addressCountry": "Nepal"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Cosmos College of Management & Technology",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kathmandu",
+          "addressCountry": "Nepal"
+        }
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "CodeRunners Technologies"
+      },
+      "sameAs": [
+        "https://github.com/sc8134",
+        "https://www.linkedin.com/in/sagar-rc",
+        "https://x.com/Sagarch05339168"
+      ],
+      "knowsAbout": [
+        "React", "TypeScript", "Node.js", "Python", "PostgreSQL",
+        "Tailwind CSS", "Vite", "Flask", "FastAPI", "Docker",
+        "LangGraph", "spaCy", "FFmpeg", "OpenAI API"
+      ]
+    }
+    </script>
+
+    <!-- Structured Data: WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Sagar Roka Chhetri — Portfolio",
+      "url": "https://sagarrc.com.np",
+      "description": "Portfolio of Sagar Roka Chhetri, Full Stack Engineer from Kathmandu, Nepal.",
+      "author": {
+        "@type": "Person",
+        "name": "Sagar Roka Chhetri"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="font-family: system-ui, sans-serif; background: #07090d; color: #f5f2eb; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center;">
+        <h1 style="font-size: 1.5rem; color: #d4a054; margin-bottom: 1rem;">Sagar Roka Chhetri</h1>
+        <p style="color: #9fa7b3; max-width: 400px;">This portfolio needs JavaScript to run. Please enable JavaScript in your browser settings, or visit my GitHub at <a href="https://github.com/sc8134" style="color: #d4a054; text-decoration: underline;">github.com/sc8134</a></p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

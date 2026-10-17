@@ -1,4 +1,4 @@
-import { Component, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   ArrowUpRight,
   Check,
@@ -190,6 +190,9 @@ export function Portfolio() {
   const [sending, setSending] = useState(false);
   const [sendStatus, setSendStatus] = useState<"idle" | "success" | "error">("idle");
   const [question, setQuestion] = useState(suggested[0]);
+
+  // Ref for scrolling to project detail card on mobile when a project is selected
+  const projectDetailRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setReady(true);
@@ -819,6 +822,12 @@ export function Portfolio() {
                         onClick={() => {
                           playClick();
                           setProjectId(item.id);
+                          // On mobile, scroll to the detail card after selecting
+                          setTimeout(() => {
+                            if (window.innerWidth < 1024) {
+                              projectDetailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                            }
+                          }, 100);
                         }}
                         className={`flex w-full items-start justify-between gap-4 rounded-2xl border p-4 text-left transition-all duration-200 ${
                           isSelected
@@ -880,7 +889,7 @@ export function Portfolio() {
 
               {/* Right Column: Detailed Featured Project Inspection Card */}
               {activeProject ? (
-                <article className="lg:col-span-7 rounded-2xl border border-line bg-surface p-6 sm:p-8 lg:sticky lg:top-24 lg:self-start space-y-6 shadow-2xl">
+                <article ref={projectDetailRef} className="lg:col-span-7 rounded-2xl border border-line bg-surface p-6 sm:p-8 lg:sticky lg:top-24 lg:self-start space-y-6 shadow-2xl scroll-mt-20">
                   {/* Top Header */}
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>

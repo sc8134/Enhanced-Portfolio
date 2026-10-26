@@ -2,6 +2,7 @@
 // Simulates the NLP cosine-similarity matching and auto-drafted cover letter pitch from the real JobHunt Agent project.
 import { useState } from "react";
 import { Bot, Sparkles, Check, Zap, FileText } from "lucide-react";
+import { Amp, amp } from "@/utils/amp";
 
 const SAMPLE_ROLES = [
   {
@@ -37,7 +38,7 @@ export function JobHuntAgentWidget() {
         <div className="flex items-center gap-2">
           <Bot className="size-4 text-indigo-400" />
           <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
-            JobHunt Agent · Semantic Matcher & Draft Engine
+            JobHunt Agent · Semantic Matcher <Amp /> Draft Engine
           </span>
         </div>
         <span className="rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] text-indigo-300 font-mono">

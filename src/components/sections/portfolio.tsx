@@ -22,7 +22,7 @@ import {
   VolumeX,
   X,
 } from "lucide-react";
-import { notes, type Note, type NoteBlock } from "@/data/notes";
+// notes import removed — essays section hidden from main page
 import {
   credentials,
   fallbackReply,
@@ -42,23 +42,19 @@ import { TerminalModal } from "./terminal-modal";
 import { ProjectModal } from "./project-modal";
 import { GithubPulse } from "./github-pulse";
 import { getAudioMuted, initAudio, playChime, playClick, toggleAudioMute } from "./audio-feedback";
+import { Amp, amp } from "@/utils/amp";
+import { HeroTerminal } from "./hero-terminal";
+import { TechPill } from "./tech-icons";
 
 const NAV = [
   { id: "signal", label: "Overview" },
   { id: "origin", label: "Origin" },
   { id: "work", label: "The Builds" },
   { id: "craft", label: "Proof Matrix" },
-  { id: "path", label: "Career & Study" },
-  { id: "notes", label: "Field Notes" },
-  { id: "hire", label: "Recruiter Hub" },
+  { id: "path", label: "Career" },
+  { id: "honours", label: "Honours" },
+  { id: "hire", label: "Hire" },
 ];
-
-function formatNoteDate(iso: string) {
-  const [year, month, day] = iso.split("-").map(Number);
-  const names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  if (!year || !month || !day) return iso;
-  return `${day} ${names[month - 1]} ${year}`;
-}
 
 function replyFor(query: string) {
   const q = query.toLowerCase().trim();
@@ -114,54 +110,7 @@ function SignalFrame({
   activeProjectId: string;
   onSelectProject: (id: string) => void;
 }) {
-  return (
-    <div className="relative h-[420px] sm:aspect-square sm:h-auto w-full overflow-hidden rounded-2xl border border-line bg-[#07090d] shadow-2xl">
-      <CodePlayground />
-    </div>
-  );
-}
-
-function NoteBody({ blocks }: { blocks: NoteBlock[] }) {
-  return (
-    <div className="space-y-6">
-      {blocks.map((block, index) => {
-        if (block.type === "heading") {
-          return (
-            <h3 key={index} className="pt-4 font-display text-2xl sm:text-3xl text-ink font-normal">
-              {block.text}
-            </h3>
-          );
-        }
-        if (block.type === "quote") {
-          return (
-            <blockquote
-              key={index}
-              className="border-l-3 border-brass-ink pl-4 font-display text-xl sm:text-2xl text-ink italic my-4"
-            >
-              "{block.text}"
-            </blockquote>
-          );
-        }
-        if (block.type === "list") {
-          return (
-            <ul key={index} className="space-y-2.5 text-ink-soft my-4">
-              {block.items.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brass-ink" />
-                  <span className="text-sm sm:text-base leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
-          );
-        }
-        return (
-          <p key={index} className="text-base sm:text-lg leading-relaxed text-ink-soft">
-            {block.text}
-          </p>
-        );
-      })}
-    </div>
-  );
+  return <HeroTerminal />;
 }
 
 export function Portfolio() {
@@ -177,7 +126,7 @@ export function Portfolio() {
   const [filter, setFilter] = useState<"All" | "Live" | "From scratch" | "AI">("All");
   const [groupId, setGroupId] = useState(skillGroups[0].id);
   const [skillId, setSkillId] = useState(skillGroups[0].skills[0].id);
-  const [note, setNote] = useState<Note | null>(null);
+  const [showAllSkills, setShowAllSkills] = useState(false);
   const [copied, setCopied] = useState(false);
   const [clock, setClock] = useState("NPT");
   const [progress, setProgress] = useState(0);
@@ -277,7 +226,7 @@ export function Portfolio() {
   }, []);
 
   useEffect(() => {
-    if (!recruiterModalOpen && !terminalModalOpen && !selectedCaseStudy && !menu) return;
+    if (!recruiterModalOpen && !terminalModalOpen && !selectedCaseStudy) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setRecruiterModalOpen(false);
@@ -293,7 +242,17 @@ export function Portfolio() {
       document.body.style.overflow = previous;
       window.removeEventListener("keydown", onKey);
     };
-  }, [recruiterModalOpen, terminalModalOpen, selectedCaseStudy, menu]);
+  }, [recruiterModalOpen, terminalModalOpen, selectedCaseStudy]);
+
+  // Separate effect: Escape closes menu without locking body scroll
+  useEffect(() => {
+    if (!menu) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenu(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menu]);
 
   const visibleProjects = useMemo(() => {
     if (filter === "Live") return projects.filter((item) => item.live);
@@ -304,7 +263,8 @@ export function Portfolio() {
 
   const activeProject = visibleProjects.find((item) => item.id === projectId) ?? visibleProjects[0] ?? projects[0];
   const group = skillGroups.find((item) => item.id === groupId) ?? skillGroups[0];
-  const skill = group.skills.find((item) => item.id === skillId) ?? group.skills[0];
+  const visibleSkills = showAllSkills ? group.skills : group.skills.filter((s) => s.level === "Production");
+  const skill = visibleSkills.find((item) => item.id === skillId) ?? visibleSkills[0] ?? group.skills[0];
   const answer = replyFor(question);
 
   function chooseFilter(next: "All" | "Live" | "From scratch" | "AI") {
@@ -326,6 +286,7 @@ export function Portfolio() {
     const next = skillGroups.find((item) => item.id === id) ?? skillGroups[0];
     setGroupId(next.id);
     setSkillId(next.skills[0].id);
+    setShowAllSkills(false);
   }
 
   async function copyEmail() {
@@ -383,14 +344,6 @@ export function Portfolio() {
     }
   }
 
-  function openNote(next: Note) {
-    playClick();
-    setNote(next);
-    window.setTimeout(() => {
-      document.getElementById("reader")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 40);
-  }
-
   function handleOpenProject(p: Project) {
     playChime();
     setSelectedCaseStudy(p);
@@ -445,21 +398,23 @@ export function Portfolio() {
           </a>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main Sections">
-            {NAV.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={playClick}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium tracking-wide transition-colors ${
-                  active === item.id
-                    ? "bg-surface-2 text-brass border border-brass/30"
-                    : "text-muted hover:text-fg hover:bg-surface/50"
-                }`}
-              >
-                {item.label}
-              </a>
-            ))}
+          <nav className="hidden items-center lg:flex" aria-label="Main Sections">
+            <div className="flex items-center gap-0.5 rounded-full border border-line bg-surface/80 backdrop-blur-sm px-1.5 py-1">
+              {NAV.map((item) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  onClick={playClick}
+                  className={`rounded-full px-3 py-1.5 text-xs font-medium tracking-wide transition-all duration-150 ${
+                    active === item.id
+                      ? "bg-brass text-ink shadow-sm"
+                      : "text-muted hover:text-fg hover:bg-surface-2"
+                  }`}
+                >
+                  {amp(item.label)}
+                </a>
+              ))}
+            </div>
           </nav>
 
           {/* Header Actions */}
@@ -535,7 +490,7 @@ export function Portfolio() {
                 }}
                 className="border-b border-line py-3.5 font-display text-2xl text-fg hover:text-brass transition-colors"
               >
-                {item.label}
+                {amp(item.label)}
               </a>
             ))}
           </nav>
@@ -570,19 +525,19 @@ export function Portfolio() {
 
       <main>
         {/* HERO SECTION: The 1-of-1 Centerpiece */}
-        <section id="signal" className="border-b border-line relative overflow-hidden">
+        <section id="signal" className="border-b border-line relative">
           {/* Subtle background glow */}
           <div className="absolute top-1/4 left-1/4 -z-10 size-96 rounded-full bg-brass/5 blur-3xl pointer-events-none" />
 
-          <div className="mx-auto grid max-w-6xl items-center gap-8 px-5 pt-24 pb-12 lg:grid-cols-12 lg:pt-36 lg:pb-24">
+          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 sm:px-5 pt-24 pb-12 lg:grid-cols-12 lg:pt-36 lg:pb-24">
             {/* Left Column: Bio & Core Pitch */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-6 space-y-6">
               {/* Location & Status HUD */}
               <div className="inline-flex items-center gap-2.5 rounded-full border border-brass/30 bg-surface px-3.5 py-1.5 text-xs text-muted backdrop-blur-sm">
                 <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-fg font-medium">Kathmandu, Nepal</span>
                 <span className="text-line-bright">|</span>
-                <span className="text-brass">Open to Roles & Internships</span>
+                <span className="text-brass">Open to Full-Time Roles</span>
               </div>
 
               {/* Title & Name */}
@@ -595,7 +550,7 @@ export function Portfolio() {
                 </h1>
 
                 {/* Rotating Roles Tagline */}
-                <p className="mt-4 min-h-8 font-display text-xl sm:text-2xl text-fg/90 italic">
+                <p className="mt-4 min-h-8 font-display text-lg sm:text-xl lg:text-2xl text-fg/90 italic">
                   <span className="role-in text-brass" key={profile.roles[role]}>
                     {profile.roles[role]}
                   </span>
@@ -603,12 +558,12 @@ export function Portfolio() {
               </div>
 
               {/* Verified Elevator Bio */}
-              <p className="max-w-xl text-base leading-relaxed text-muted">
+              <p className="max-w-xl text-sm sm:text-base leading-relaxed text-muted">
                 {profile.heroBio}
               </p>
 
               {/* Primary Action Row */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -658,13 +613,13 @@ export function Portfolio() {
               </div>
 
               {/* Verified Metrics Counter */}
-              <dl className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4 shadow-xl">
+              <dl className="mt-6 sm:mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4 shadow-xl">
                 {profile.stats.map((stat) => (
-                  <div key={stat.label} className="bg-surface px-4 py-4.5">
-                    <dt className="text-[11px] tracking-wider text-muted uppercase font-medium">
+                  <div key={stat.label} className="bg-surface px-3 py-3.5 sm:px-4 sm:py-4.5">
+                    <dt className="text-[10px] sm:text-[11px] tracking-wider text-muted uppercase font-medium">
                       {stat.label}
                     </dt>
-                    <dd className="mt-1.5 font-display text-2xl sm:text-3xl text-fg font-normal">
+                    <dd className="mt-1 sm:mt-1.5 font-display text-xl sm:text-2xl lg:text-3xl text-fg font-normal">
                       {stat.value}
                     </dd>
                   </div>
@@ -672,34 +627,39 @@ export function Portfolio() {
               </dl>
             </div>
 
-            {/* Right Column: Interactive 3D Canvas Showcase */}
-            <div className="lg:col-span-5 flex flex-col items-center">
-              <SignalFrame
-                activeProjectId={projectId}
-                onSelectProject={(id) => {
-                  playChime();
-                  setProjectId(id);
-                  const p = projects.find((item) => item.id === id);
-                  if (p) setSelectedCaseStudy(p);
-                }}
-              />
+            {/* Right Column: Interactive 3D MacBook Showcase */}
+            <div className="lg:col-span-6 flex flex-col items-center overflow-visible w-full">
+              {/* Scale for each breakpoint so it never overflows */}
+              <div className="w-full flex items-center justify-center origin-top
+                              scale-[0.52] sm:scale-[0.65] md:scale-[0.78] lg:scale-100
+                              -mb-32 sm:-mb-20 md:-mb-12 lg:mb-0">
+                <SignalFrame
+                  activeProjectId={projectId}
+                  onSelectProject={(id) => {
+                    playChime();
+                    setProjectId(id);
+                    const p = projects.find((item) => item.id === id);
+                    if (p) setSelectedCaseStudy(p);
+                  }}
+                />
+              </div>
             </div>
           </div>
 
           {/* Live Git Activity & Engineering Velocity Pulse */}
-          <div className="mx-auto max-w-6xl px-5 pb-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-5 pb-10 sm:pb-16">
             <GithubPulse />
           </div>
         </section>
 
         {/* SECTION 2: ORIGIN & EDITORIAL STORY ("The Long Way Around") */}
         <section id="origin" className="scroll-mt-20 bg-paper text-ink border-b border-paper-line">
-          <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:gap-12 lg:py-20 lg:grid-cols-12">
+          <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-5 py-12 lg:gap-12 lg:py-20 lg:grid-cols-12">
             {/* Left Column: Editorial Callout */}
             <div className="lg:col-span-5 space-y-6">
               <div>
                 <p className="text-xs tracking-widest text-brass-ink uppercase font-semibold">
-                  02 · Origin & Philosophy
+                  02 · Origin <Amp ink /> Philosophy
                 </p>
                 <h2 className="mt-3 font-display text-4xl sm:text-5xl leading-tight font-normal">
                   The long way around.
@@ -714,68 +674,26 @@ export function Portfolio() {
                 "{profile.tagline}"
               </blockquote>
 
-              <div className="rounded-2xl border border-paper-line bg-white/60 p-5 shadow-sm space-y-2">
-                <span className="text-xs uppercase tracking-wider text-brass-ink font-semibold">
-                  The 30-Second Truth
-                </span>
-                <p className="text-sm leading-relaxed text-ink-soft">
-                  Final-year computer engineering student at Cosmos College. Two years of shipping applications solo from database schema to deployment, followed by leading production MERN platform frontend and cPanel deployments at CodeRunners Technologies.
-                </p>
-              </div>
+
             </div>
 
-            {/* Right Column: Deep Biographical Story */}
+            {/* Right Column: Brief Origin Story */}
             <div className="lg:col-span-7 space-y-6">
               {profile.bio.map((paragraph, index) => (
-                <div key={index} className="flex gap-4">
-                  <span className="font-display text-2xl text-brass-ink font-semibold shrink-0 pt-0.5">
-                    0{index + 1}
-                  </span>
-                  <p className="text-base sm:text-lg leading-relaxed text-ink-soft">
-                    {paragraph}
-                  </p>
-                </div>
+                <p key={index} className="text-base sm:text-lg leading-relaxed text-ink-soft">
+                  {paragraph}
+                </p>
               ))}
             </div>
           </div>
         </section>
 
-        {/* SECTION 3: IMMUTABLE ENGINEERING PRINCIPLES */}
-        <section id="principles" className="scroll-mt-20 border-b border-line bg-surface/40">
-          <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
-            <p className="text-xs tracking-widest text-brass uppercase font-semibold">
-              03 · How I Build
-            </p>
-            <h2 className="mt-3 max-w-xl font-display text-4xl sm:text-5xl leading-none font-normal">
-              Four rules I actually keep.
-            </h2>
-
-            <ol className="mt-12 divide-y divide-line border-y border-line">
-              {profile.principles.map((item, index) => (
-                <li
-                  key={item.title}
-                  className="grid gap-3 py-7 md:grid-cols-12 md:items-baseline group hover:bg-surface/50 px-3 rounded-lg transition-colors"
-                >
-                  <span className="font-display text-2xl text-brass md:col-span-1">
-                    0{index + 1}
-                  </span>
-                  <h3 className="font-display text-2xl sm:text-3xl text-fg md:col-span-4 font-normal">
-                    {item.title}
-                  </h3>
-                  <p className="text-base leading-relaxed text-muted md:col-span-7">
-                    {item.body}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
 
         {/* SECTION 4: FLAGSHIP WORK SHOWCASE (ALL 8 BUILDS) */}
         <section id="work" className="scroll-mt-20 border-b border-line">
-          <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-5 py-12 sm:py-20">
             {/* Header & Filter Pills */}
-            <div className="flex flex-wrap items-end justify-between gap-6 pb-6 border-b border-line">
+            <div className="flex flex-wrap items-end justify-between gap-4 sm:gap-6 pb-6 border-b border-line">
               <div>
                 <p className="text-xs tracking-widest text-brass uppercase font-semibold">
                   04 · The Showcase
@@ -800,16 +718,16 @@ export function Portfolio() {
                         : "border border-line bg-surface text-muted hover:text-fg hover:border-brass/40"
                     }`}
                   >
-                    {item === "AI" ? "AI & ML" : item}
+                    {item === "AI" ? <>AI <Amp /> ML</> : item}
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Split Showcase Layout */}
-            <div className="mt-10 grid gap-6 lg:grid-cols-12">
+            <div className="mt-8 sm:mt-10 grid gap-6 lg:grid-cols-12">
               {/* Left Column: Project Selector Cards */}
-              <ul className="space-y-3 lg:col-span-5">
+              <ul className="space-y-2 sm:space-y-3 lg:col-span-5">
                 {visibleProjects.map((item) => {
                   const isSelected = activeProject?.id === item.id;
                   return (
@@ -828,18 +746,21 @@ export function Portfolio() {
                       >
                         <div className="flex items-start gap-3">
                           {/* Mini Thumbnail */}
-                          <div className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-line bg-bg">
+                          <div
+                            className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-line"
+                            style={{ backgroundColor: `${item.color}22` }}
+                          >
                             <img
                               src={item.image}
                               alt={item.title}
-                              className="h-full w-full object-cover object-top"
+                              className="absolute inset-0 h-full w-full object-cover object-top"
                               onError={(e) => {
-                                (e.target as HTMLElement).style.display = "none";
+                                (e.target as HTMLImageElement).style.opacity = "0";
                               }}
                             />
                             <div
-                              className="grid size-full place-items-center text-xs font-bold text-fg"
-                              style={{ backgroundColor: `${item.color}33` }}
+                              className="absolute inset-0 grid place-items-center text-[10px] font-bold"
+                              style={{ color: item.color }}
                             >
                               {item.index}
                             </div>
@@ -917,19 +838,37 @@ export function Portfolio() {
                   {/* Project Screenshot Banner */}
                   {activeProject.image && (
                     <div
-                      className="relative overflow-hidden rounded-xl border border-line bg-bg aspect-video max-h-64 cursor-pointer group"
+                      className="cursor-pointer group"
                       onClick={() => handleOpenProject(activeProject)}
                     >
-                      <img
-                        src={activeProject.image}
-                        alt={activeProject.title}
-                        className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
-                        <span className="inline-flex items-center gap-1 text-xs text-fg font-medium bg-surface/80 backdrop-blur-md px-3 py-1 rounded-full border border-line">
-                          Click to inspect architecture & trade-offs
-                          <ArrowUpRight className="size-3" />
-                        </span>
+                      {/* Browser chrome frame */}
+                      <div className="rounded-xl overflow-hidden border border-line shadow-xl">
+                        {/* Fake browser bar */}
+                        <div className="flex items-center gap-2 px-3 py-2 bg-surface-2 border-b border-line">
+                          <span className="size-2.5 rounded-full bg-red-500/70" />
+                          <span className="size-2.5 rounded-full bg-amber-400/70" />
+                          <span className="size-2.5 rounded-full bg-emerald-500/70" />
+                          <div className="flex-1 mx-2 rounded-md bg-surface px-2 py-0.5 text-[10px] text-muted font-mono truncate border border-line">
+                            {activeProject.live
+                              ? activeProject.live.replace("https://", "")
+                              : `github.com/sc8134/${activeProject.id}`}
+                          </div>
+                          <ArrowUpRight className="size-3 text-muted group-hover:text-brass transition-colors" />
+                        </div>
+                        {/* Screenshot */}
+                        <div className="relative overflow-hidden bg-bg" style={{ aspectRatio: "16/9" }}>
+                          <img
+                            src={activeProject.image}
+                            alt={activeProject.title}
+                            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                            <span className="inline-flex items-center gap-1 text-xs text-fg font-medium bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                              Inspect architecture <Amp /> trade-offs
+                              <ArrowUpRight className="size-3" />
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -1006,7 +945,7 @@ export function Portfolio() {
 
         {/* SECTION 5: CRAFT & PROOF MATRIX (SKILLS WITH REAL CODE PROOF) */}
         <section id="craft" className="scroll-mt-20 border-b border-line bg-surface/30">
-          <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-5 py-12 sm:py-20">
             <p className="text-xs tracking-widest text-brass uppercase font-semibold">
               05 · Proof, Not Percentages
             </p>
@@ -1017,8 +956,8 @@ export function Portfolio() {
               Levels mean something tangible. "Production" is deployed code running for live users. "Working" is proven in finished projects. "Exploring" is honest about current research.
             </p>
 
-            {/* Category Pills */}
-            <div className="mt-8 flex flex-wrap gap-2">
+            {/* Category Pills — scrollable on mobile */}
+            <div className="mt-6 sm:mt-8 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible scrollbar-none">
               {skillGroups.map((item) => (
                 <button
                   key={item.id}
@@ -1030,14 +969,16 @@ export function Portfolio() {
                       : "border border-line bg-surface text-fg hover:border-brass/40"
                   }`}
                 >
-                  {item.label}
+                  {amp(item.label)}
                 </button>
               ))}
             </div>
 
             {/* Skill Cards Grid */}
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {group.skills.map((item) => {
+            <div className="mt-4 sm:mt-6 grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+              {group.skills
+                .filter((item) => showAllSkills || item.level === "Production")
+                .map((item) => {
                 const isSelected = skill.id === item.id;
                 return (
                   <button
@@ -1062,26 +1003,38 @@ export function Portfolio() {
                       )}
                     </div>
                     <span className="mt-2 block font-display text-xl text-fg font-normal">
-                      {item.name}
-                    </span>
-                  </button>
+                      {amp(item.name)}
+                    </span>                  </button>
                 );
               })}
             </div>
+
+            {/* Toggle for Working/Exploring skills */}
+            <button
+              type="button"
+              onClick={() => {
+                playClick();
+                setShowAllSkills((v) => !v);
+              }}
+              className="mt-4 inline-flex items-center gap-1.5 text-xs text-muted hover:text-brass transition-colors"
+            >
+              <ChevronRight className={`size-3.5 transition-transform ${showAllSkills ? "rotate-90" : ""}`} />
+              {showAllSkills ? "Show production only" : "Show working & exploring skills"}
+            </button>
 
             {/* Selected Skill Verification Inspector */}
             <div className="mt-6 rounded-2xl border border-line bg-surface p-6 shadow-xl">
               <div className="flex items-center justify-between border-b border-line pb-4">
                 <div>
                   <span className="text-xs uppercase tracking-wider text-brass font-semibold">
-                    Verified Production Proof · {skill.name}
+                    Verified Production Proof · {amp(skill.name)}
                   </span>
                   <h4 className="font-display text-2xl text-fg font-normal mt-1">
                     {skill.level} Capability
                   </h4>
                 </div>
                 <span className="rounded-full border border-line bg-surface-2 px-3 py-1 text-xs text-muted">
-                  {group.label}
+                  {amp(group.label)}
                 </span>
               </div>
               <p className="mt-4 text-base leading-relaxed text-fg/90">
@@ -1093,7 +1046,7 @@ export function Portfolio() {
 
         {/* SECTION 6: THE PATH (CAREER, STUDY & CREDENTIALS) */}
         <section id="path" className="scroll-mt-20 bg-paper text-ink border-b border-paper-line">
-          <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-5 py-12 sm:py-20">
             <p className="text-xs tracking-widest text-brass-ink uppercase font-semibold">
               06 · The Path
             </p>
@@ -1101,178 +1054,206 @@ export function Portfolio() {
               Work, and the degree that ran beside it.
             </h2>
 
-            <ol className="mt-12 space-y-0">
+            {/* Timeline */}
+            <ol className="mt-12 relative">
+              {/* Vertical line */}
+              <div className="absolute left-[6px] top-2 bottom-2 w-px bg-paper-line md:left-[11px]" aria-hidden="true" />
+
               {path.map((item, index) => (
                 <li
                   key={item.id}
-                  className="grid gap-4 border-t border-paper-line py-8 md:grid-cols-12"
+                  className="relative pl-8 md:pl-12 pb-12 last:pb-0"
                 >
-                  <div className="md:col-span-4 space-y-1">
-                    <p className="text-xs tracking-widest text-brass-ink uppercase font-semibold">
-                      {item.kind === "work" ? "Work Experience" : "Education"} · 0{index + 1}
-                    </p>
-                    <h3 className="font-display text-2xl sm:text-3xl text-ink font-normal">
-                      {item.role}
-                    </h3>
-                    <p className="text-base font-medium text-ink">{item.place}</p>
-                    {item.detail && <p className="text-xs text-ink-soft">{item.detail}</p>}
-                    <p className="text-xs text-ink-soft pt-1">
-                      {item.date}
-                      {item.where ? ` · ${item.where}` : ""}
-                    </p>
+                  {/* Timeline dot */}
+                  <div
+                    className={`absolute left-0 top-1.5 size-3.5 rounded-full border-2 md:size-[22px] md:left-0 md:top-1 flex items-center justify-center ${
+                      item.kind === "work"
+                        ? "bg-brass border-brass"
+                        : "bg-paper border-brass-ink"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {item.kind === "work" ? (
+                      <div className="size-1.5 rounded-full bg-ink hidden md:block" />
+                    ) : (
+                      <div className="size-1.5 rounded-full bg-brass-ink hidden md:block" />
+                    )}
                   </div>
 
-                  <div className="md:col-span-8">
-                    <p className="text-base sm:text-lg leading-relaxed text-ink-soft">
-                      {item.story}
-                    </p>
-                    {item.tech && (
-                      <ul className="mt-4 flex flex-wrap gap-2">
-                        {item.tech.map((t) => (
-                          <li
-                            key={t}
-                            className="rounded-full border border-paper-line bg-white/70 px-3 py-1 text-xs text-ink font-medium"
-                          >
-                            {t}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  <div className="grid gap-4 md:grid-cols-12 md:gap-8">
+                    {/* Left: meta */}
+                    <div className="md:col-span-4 space-y-1.5">
+                      {/* Kind badge */}
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                        item.kind === "work"
+                          ? "bg-brass/15 text-brass-ink"
+                          : "bg-ink/8 text-ink-soft"
+                      }`}>
+                        {item.kind === "work" ? "Work Experience" : "Education"}
+                      </span>
+
+                      {/* Date badge */}
+                      <div className="inline-flex items-center gap-1.5 rounded-lg border border-paper-line bg-white/60 px-2.5 py-1 text-xs text-ink-soft font-mono">
+                        <svg viewBox="0 0 16 16" className="size-3 shrink-0" fill="currentColor">
+                          <path d="M4 1a1 1 0 0 0-1 1v1H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-1V2a1 1 0 0 0-2 0v1H5V2a1 1 0 0 0-1-1zM2 5h12v8H2V5z" />
+                        </svg>
+                        {item.date}
+                      </div>
+
+                      <h3 className="font-display text-2xl sm:text-3xl text-ink font-normal leading-tight mt-1">
+                        {amp(item.role, true)}
+                      </h3>
+                      <p className="text-sm font-semibold text-ink">{amp(item.place, true)}</p>
+                      {item.detail && <p className="text-xs text-ink-soft">{item.detail}</p>}
+                      {item.where && (
+                        <span className="inline-flex items-center gap-1 text-[10px] text-ink-soft">
+                          <svg viewBox="0 0 16 16" className="size-3" fill="currentColor">
+                            <path d="M8 1a5 5 0 0 0-5 5c0 4 5 9 5 9s5-5 5-9a5 5 0 0 0-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+                          </svg>
+                          {item.where}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Right: story + tech */}
+                    <div className="md:col-span-8 space-y-4">
+                      <p className="text-base sm:text-lg leading-relaxed text-ink-soft">
+                        {item.story}
+                      </p>
+                      {item.tech && item.tech.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {item.tech.map((t) => (
+                            <TechPill key={t} name={t} size={13} />
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </li>
               ))}
             </ol>
+          </div>
+        </section>
 
-            {/* Verified Certifications */}
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {credentials.map((item) => (
+        {/* SECTION 7: CREDENTIALS & HONOURS */}
+        <section id="honours" className="scroll-mt-20 border-b border-line bg-surface/20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-5 py-12 sm:py-20">
+
+            {/* Section header */}
+            <p className="text-xs tracking-widest text-brass uppercase font-semibold">
+              07 · Credentials <Amp /> Honours
+            </p>
+            <h2 className="mt-3 font-display text-4xl sm:text-5xl leading-none font-normal">
+              Verified. In writing.
+            </h2>
+            <p className="mt-3 max-w-2xl text-muted text-sm sm:text-base">
+              Issued credentials from CodeAlpha following a completed virtual full-stack engineering internship. Both documents are verifiable — click either card to open the original PDF.
+            </p>
+
+            {/* Credential cards */}
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
+              {credentials.map((item, idx) => (
                 <a
                   key={item.id}
                   href={item.href}
                   target="_blank"
                   rel="noreferrer"
                   onClick={playClick}
-                  className="rounded-2xl border border-paper-line bg-white/70 p-6 shadow-sm hover:shadow-md transition-shadow"
+                  className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-line bg-surface p-7 shadow-xl transition-all hover:border-brass/50 hover:shadow-brass/10 hover:shadow-2xl"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs uppercase tracking-wider text-brass-ink font-semibold">
-                      Official Credential · {item.code}
-                    </span>
-                    <ArrowUpRight className="size-4 text-brass-ink" />
+                  {/* Ambient glow on hover */}
+                  <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-brass/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                  {/* Top row: badge + open icon */}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      {/* Seal icon */}
+                      <div className="grid size-11 shrink-0 place-items-center rounded-xl border border-brass/30 bg-brass/10 text-brass">
+                        {idx === 0 ? (
+                          <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="8" r="6" />
+                            <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
+                          </svg>
+                        )}
+                      </div>
+                      <div>
+                        <span className="block text-[10px] uppercase tracking-widest text-brass font-semibold">
+                          {item.type}
+                        </span>
+                        <span className="block text-[11px] text-muted">
+                          {item.issuedBy}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[10px] text-muted group-hover:border-brass/40 group-hover:text-brass transition-colors">
+                      <span>Open PDF</span>
+                      <ArrowUpRight className="size-3" />
+                    </div>
                   </div>
-                  <h3 className="mt-2 font-display text-2xl text-ink font-normal">
-                    {item.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-ink-soft">
-                    {item.issuer} · {item.field}
-                  </p>
-                  <p className="mt-3 text-xs text-ink-soft">{item.date}</p>
+
+                  {/* Title */}
+                  <div>
+                    <h3 className="font-display text-2xl sm:text-3xl text-fg font-normal leading-tight group-hover:text-brass transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {/* Footer metadata */}
+                  <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-line pt-4">
+                    <div className="space-y-0.5">
+                      <span className="block text-[10px] uppercase tracking-wider text-muted">
+                        Credential ID
+                      </span>
+                      <span className="font-mono text-xs text-fg">
+                        {item.code}
+                      </span>
+                    </div>
+                    <div className="space-y-0.5 text-right">
+                      <span className="block text-[10px] uppercase tracking-wider text-muted">
+                        Issued
+                      </span>
+                      <span className="text-xs text-fg">{item.date}</span>
+                    </div>
+                  </div>
                 </a>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* SECTION 7: FIELD NOTES & ESSAYS (FULL EDITORIAL READS) */}
-        <section id="notes" className="scroll-mt-20 border-b border-line">
-          <div className="mx-auto max-w-6xl px-5 py-12 sm:py-20">
-            <p className="text-xs tracking-widest text-brass uppercase font-semibold">
-              07 · Field Notes
-            </p>
-            <h2 className="mt-3 max-w-2xl font-display text-4xl sm:text-5xl leading-tight font-normal">
-              Essays, in his own words.
-            </h2>
-            <p className="mt-3 max-w-2xl text-muted text-sm sm:text-base">
-              Seven original essays from sagarrc.com.np. Unfiltered case studies, the realities of teaching yourself in Nepal without mentors, and how to ship solo. Open one to read in full.
-            </p>
-
-            <ul className="mt-10 divide-y divide-line border-y border-line">
-              {notes.map((item) => (
-                <li key={item.slug}>
-                  <button
-                    type="button"
-                    onClick={() => openNote(item)}
-                    className="flex w-full flex-col gap-2 py-6 text-left transition-colors hover:bg-surface/40 px-3 rounded-lg md:flex-row md:items-baseline md:justify-between group"
-                  >
-                    <div>
-                      <span className="text-xs tracking-widest text-brass uppercase font-medium">
-                        {item.entryNumber} · {item.mood}
-                      </span>
-                      <span className="mt-1 block font-display text-2xl sm:text-3xl text-fg font-normal group-hover:text-brass transition-colors">
-                        {item.title}
-                      </span>
-                      <span className="mt-2 block max-w-2xl text-sm leading-relaxed text-muted">
-                        {item.excerpt}
-                      </span>
-                    </div>
-
-                    <span className="shrink-0 text-xs tracking-wider text-muted uppercase mt-2 md:mt-0">
-                      {formatNoteDate(item.date)} · {item.readTime} min read
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            {/* In-Line Full Note Reader */}
-            {note ? (
-              <article
-                id="reader"
-                className="scroll-mt-24 mt-10 rounded-2xl bg-paper px-6 py-10 text-ink sm:px-10 shadow-2xl"
+            {/* Issuer note */}
+            <p className="mt-6 text-xs text-muted">
+              Issued by{" "}
+              <a
+                href="https://codealpha.tech"
+                target="_blank"
+                rel="noreferrer"
+                className="text-brass hover:underline"
               >
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-paper-line pb-4">
-                  <span className="text-xs tracking-widest text-brass-ink uppercase font-semibold">
-                    {note.entryNumber} · {formatNoteDate(note.date)} · {note.readTime} MIN READ
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playClick();
-                      setNote(null);
-                    }}
-                    className="text-xs font-semibold uppercase tracking-wider text-ink underline underline-offset-4 hover:text-brass-ink"
-                  >
-                    Close Reader
-                  </button>
-                </div>
-
-                <h3 className="mt-6 font-display text-3xl sm:text-5xl leading-tight font-normal text-ink">
-                  {note.title}
-                </h3>
-                <p className="mt-3 font-display text-xl text-ink-soft italic">
-                  {note.subtitle}
-                </p>
-
-                <div className="mt-8 border-t border-paper-line pt-8">
-                  <NoteBody blocks={note.content} />
-                </div>
-
-                <div className="mt-10 border-t border-paper-line pt-6 flex justify-between items-center text-xs text-ink-soft">
-                  <span>Tags: {note.tags.join(", ")}</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playClick();
-                      setNote(null);
-                    }}
-                    className="rounded-full bg-ink px-4 py-1.5 text-xs font-semibold text-paper hover:bg-brass-ink transition-colors"
-                  >
-                    Done Reading
-                  </button>
-                </div>
-              </article>
-            ) : null}
+                CodeAlpha
+              </a>{" "}
+              · Credential ID CA/DF1/252458 · Full Stack Development track · Remote internship, Aug – Sep 2026.
+            </p>
           </div>
         </section>
 
         {/* SECTION 8: RECRUITER & CONTACT HUB */}
         <section id="hire" className="scroll-mt-20">
-          <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:gap-12 lg:py-20 lg:grid-cols-12">
+          <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-5 py-12 lg:gap-12 lg:py-20 lg:grid-cols-12">
             {/* Left Column: Direct Info & Timezone Clock */}
             <div className="lg:col-span-5 space-y-6">
               <div>
                 <p className="text-xs tracking-widest text-brass uppercase font-semibold">
-                  08 · Recruiter & Hire Hub
+                  09 · Recruiter <Amp /> Hire Hub
                 </p>
                 <h2 className="mt-3 font-display text-4xl sm:text-5xl leading-none font-normal">
                   If the work fits, write.
@@ -1292,7 +1273,7 @@ export function Portfolio() {
                   {ready ? clock : "--:--:--"}
                 </p>
                 <p className="text-xs text-muted">
-                  Seamless overlap with European working hours & US morning schedules.
+                  Seamless overlap with European working hours <Amp /> US morning schedules.
                 </p>
               </div>
 
@@ -1325,7 +1306,7 @@ export function Portfolio() {
               <button
                 type="button"
                 onClick={copyEmail}
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-3 text-sm font-medium text-fg hover:border-brass transition-colors active:scale-95 shadow-md w-full sm:w-auto justify-center sm:justify-start"
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-3 text-sm font-medium text-fg hover:border-brass transition-colors active:scale-95 shadow-md w-full justify-center"
               >
                 {copied ? <Check className="size-4 text-emerald-400 shrink-0" /> : <Copy className="size-4 text-brass shrink-0" />}
                 <span className="truncate">{copied ? "Email Copied!" : "Copy Email (sc81341@gmail.com)"}</span>
@@ -1356,7 +1337,7 @@ export function Portfolio() {
                   <span className="text-xs uppercase tracking-wider text-muted font-medium">
                     Inquiry Type
                   </span>
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div className="mt-2 flex flex-wrap gap-1.5 sm:gap-2">
                     {[
                       "Full-time Engineering Role",
                       "Frontend / React Role",
@@ -1499,13 +1480,13 @@ export function Portfolio() {
 
       {/* Global Footer */}
       <footer className="border-t border-line bg-surface/50">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 sm:px-5 py-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-display text-lg text-fg italic">
               Built from Kathmandu, one commit at a time.
             </p>
             <p className="text-xs text-muted mt-0.5">
-              React 19 · Vite · Three.js · Tailwind CSS · Every line of code is Sagar's.
+              Built from scratch in Kathmandu - no templates, no shortcuts, no borrowed opinions.
             </p>
           </div>
 

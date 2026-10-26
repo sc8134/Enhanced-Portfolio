@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { Check, Copy, Download, ExternalLink, Mail, Sparkles, X } from "lucide-react";
 import { profile, socials } from "@/data/profile";
+import { Amp, amp } from "@/utils/amp";
 
 export function RecruiterModal({
   isOpen,
@@ -108,7 +109,7 @@ Status: Open to full-time roles, internships, and remote engineering work
               <span className="mt-1 block text-xs text-muted">Full-time, Internships, Remote</span>
             </div>
             <div className="rounded-xl border border-line bg-surface-2 p-4">
-              <span className="block text-xs uppercase tracking-wider text-muted">Education & GPA</span>
+              <span className="block text-xs uppercase tracking-wider text-muted">Education <Amp /> GPA</span>
               <span className="mt-1 block font-medium text-fg">BCE Comp Eng (2026)</span>
               <span className="mt-1 block text-xs text-muted">+2 GPA 3.78 (Top 10% in Nepal)</span>
             </div>
@@ -173,7 +174,7 @@ Status: Open to full-time roles, internships, and remote engineering work
                   className="inline-flex items-center gap-1.5 rounded-full border border-brass/40 bg-surface px-3 py-1 text-xs text-fg shadow-xs"
                 >
                   <span className="size-1.5 rounded-full bg-emerald-400" />
-                  <span>{need}</span>
+                  <span>{amp(need)}</span>
                 </span>
               ))}
             </div>

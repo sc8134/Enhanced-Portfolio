@@ -8,7 +8,8 @@ export const profile = {
   location: "Kathmandu, Nepal",
   timezone: "Asia/Kathmandu (UTC+5:45)",
   email: "sc81341@gmail.com",
-  avatar: "/pic/me.webp",
+  avatar: "/pic/me-192.webp",
+  avatarSmall: "/pic/me-96.webp",
   resume: "/resume/Sagar_Roka_Chhetri_Resume_ATS.pdf",
   resumeExternal:
     "https://github.com/sc8134/My_Portfolio/blob/master/public/resume/Sagar_Roka_Chhetri_Resume_ATS.pdf",

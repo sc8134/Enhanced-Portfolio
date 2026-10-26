@@ -371,11 +371,16 @@ export function Portfolio() {
           <a
             href="#signal"
             onClick={playClick}
-            className="flex items-center gap-3 group"
+            className="flex shrink-0 items-center gap-3 group"
           >
             <div className="relative size-9 overflow-hidden rounded-lg border border-brass/50 bg-surface shadow-md">
               <img
                 src={profile.avatar}
+                srcSet={`${profile.avatarSmall} 1x, ${profile.avatar} 2x`}
+                width={36}
+                height={36}
+                loading="eager"
+                decoding="async"
                 alt="Sagar RC"
                 className="h-full w-full object-cover object-top"
                 onError={(e) => {
@@ -390,7 +395,7 @@ export function Portfolio() {
               <span className="block text-sm font-medium text-fg group-hover:text-brass transition-colors">
                 Sagar RC
               </span>
-              <span className="flex items-center gap-1.5 text-[11px] text-muted">
+              <span className="hidden items-center gap-1.5 text-[11px] text-muted min-[360px]:flex">
                 <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Kathmandu (UTC+5:45)
               </span>
@@ -418,7 +423,7 @@ export function Portfolio() {
           </nav>
 
           {/* Header Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             {/* Audio Toggle */}
             <button
               type="button"
@@ -454,7 +459,7 @@ export function Portfolio() {
                 playChime();
                 setRecruiterModalOpen(true);
               }}
-              className="inline-flex items-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-xs font-semibold text-ink hover:bg-brass-hover transition-transform duration-150 active:scale-95 shadow-md shadow-brass/20"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-brass px-3.5 py-1.5 text-xs font-semibold text-ink hover:bg-brass-hover transition-transform duration-150 active:scale-95 shadow-md shadow-brass/20"
             >
               <Sparkles className="size-3.5" />
               <span>Recruiter Brief</span>
@@ -465,6 +470,8 @@ export function Portfolio() {
               type="button"
               className="grid size-9 place-items-center rounded-full border border-line text-muted hover:text-fg lg:hidden"
               aria-label={menu ? "Close menu" : "Open menu"}
+              aria-expanded={menu}
+              aria-controls="mobile-nav"
               onClick={() => {
                 playClick();
                 setMenu((value) => !value);
@@ -478,7 +485,10 @@ export function Portfolio() {
 
       {/* Mobile Drawer Menu */}
       {menu ? (
-        <div className="fixed inset-0 z-30 bg-bg px-6 pt-24 pb-8 lg:hidden flex flex-col justify-between">
+        <div
+          id="mobile-nav"
+          className="fixed inset-0 z-30 overflow-y-auto overscroll-contain bg-bg px-6 pt-24 pb-8 lg:hidden flex flex-col justify-between"
+        >
           <nav className="flex flex-col gap-2" aria-label="Mobile Navigation">
             {NAV.map((item) => (
               <a
@@ -527,16 +537,18 @@ export function Portfolio() {
         {/* HERO SECTION: The 1-of-1 Centerpiece */}
         <section id="signal" className="border-b border-line relative">
           {/* Subtle background glow */}
-          <div className="absolute top-1/4 left-1/4 -z-10 size-96 rounded-full bg-brass/5 blur-3xl pointer-events-none" />
+          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute top-1/4 left-1/4 size-96 rounded-full bg-brass/5 blur-3xl" />
+          </div>
 
-          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 sm:px-5 pt-24 pb-12 lg:grid-cols-12 lg:pt-36 lg:pb-24">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 sm:px-5 pt-24 pb-12 lg:grid-cols-12 lg:pt-36 lg:pb-24">
             {/* Left Column: Bio & Core Pitch */}
-            <div className="lg:col-span-6 space-y-6">
+            <div className="min-w-0 lg:col-span-6 space-y-6">
               {/* Location & Status HUD */}
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-brass/30 bg-surface px-3.5 py-1.5 text-xs text-muted backdrop-blur-sm">
+              <div className="inline-flex max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 rounded-full border border-brass/30 bg-surface px-3.5 py-1.5 text-xs text-muted backdrop-blur-sm">
                 <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-fg font-medium">Kathmandu, Nepal</span>
-                <span className="text-line-bright">|</span>
+                <span className="hidden text-line-bright min-[360px]:inline">|</span>
                 <span className="text-brass">Open to Full-Time Roles</span>
               </div>
 
@@ -628,11 +640,11 @@ export function Portfolio() {
             </div>
 
             {/* Right Column: Interactive 3D MacBook Showcase */}
-            <div className="lg:col-span-6 flex flex-col items-center overflow-visible w-full">
+            <div className="min-w-0 w-full lg:col-span-6 flex flex-col items-center overflow-visible">
               {/* Scale for each breakpoint so it never overflows */}
-              <div className="w-full flex items-center justify-center origin-top
+              <div className="w-full min-w-0 flex items-center justify-center origin-top
                               scale-[0.52] sm:scale-[0.65] md:scale-[0.78] lg:scale-100
-                              -mb-32 sm:-mb-20 md:-mb-12 lg:mb-0">
+                              -mb-52 sm:-mb-36 md:-mb-20 lg:mb-0">
                 <SignalFrame
                   activeProjectId={projectId}
                   onSelectProject={(id) => {
@@ -725,11 +737,12 @@ export function Portfolio() {
             </div>
 
             {/* Split Showcase Layout */}
-            <div className="mt-8 sm:mt-10 grid gap-6 lg:grid-cols-12">
+            <div className="mt-8 sm:mt-10 grid grid-cols-1 gap-6 lg:grid-cols-12">
               {/* Left Column: Project Selector Cards */}
-              <ul className="space-y-2 sm:space-y-3 lg:col-span-5">
+              <ul className="min-w-0 space-y-2 sm:space-y-3 lg:col-span-5">
                 {visibleProjects.map((item) => {
                   const isSelected = activeProject?.id === item.id;
+                  const thumb = item.image.replace("/projects/", "/projects/thumb/").replace(/\.webp$/, "");
                   return (
                     <li key={item.id}>
                       <button
@@ -738,20 +751,25 @@ export function Portfolio() {
                           playClick();
                           setProjectId(item.id);
                         }}
-                        className={`flex w-full items-start justify-between gap-4 rounded-2xl border p-4 text-left transition-all duration-200 ${
+                        className={`flex w-full min-w-0 items-start justify-between gap-4 rounded-2xl border p-4 text-left transition-all duration-200 ${
                           isSelected
                             ? "border-brass bg-surface-2 shadow-xl ring-1 ring-brass/30"
                             : "border-line bg-surface/50 hover:bg-surface hover:border-brass/30"
                         }`}
                       >
-                        <div className="flex items-start gap-3">
+                        <div className="flex min-w-0 items-start gap-3">
                           {/* Mini Thumbnail */}
                           <div
                             className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-line"
                             style={{ backgroundColor: `${item.color}22` }}
                           >
                             <img
-                              src={item.image}
+                              src={`${thumb}-256.webp`}
+                              srcSet={`${thumb}-128.webp 1x, ${thumb}-256.webp 2x`}
+                              width={48}
+                              height={48}
+                              loading="lazy"
+                              decoding="async"
                               alt={item.title}
                               className="absolute inset-0 h-full w-full object-cover object-top"
                               onError={(e) => {
@@ -766,7 +784,7 @@ export function Portfolio() {
                             </div>
                           </div>
 
-                          <div>
+                          <div className="min-w-0">
                             <span className="block text-[11px] tracking-wider text-muted uppercase">
                               {item.index} · {item.year}
                             </span>
@@ -860,6 +878,8 @@ export function Portfolio() {
                           <img
                             src={activeProject.image}
                             alt={activeProject.title}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">

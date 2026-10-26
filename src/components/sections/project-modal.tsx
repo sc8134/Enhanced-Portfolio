@@ -123,6 +123,8 @@ export function ProjectModal({
               <img
                 src={project.image}
                 alt={`${project.title} preview`}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover object-top"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = "none";
